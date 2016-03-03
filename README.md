@@ -1,3 +1,6 @@
+# mbob
+
+Minimal build system with parallel processes and live-reload server
 
 ## Use
 
