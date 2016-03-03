@@ -1,6 +1,6 @@
 # mbob
 
-Minimal build system with parallel processes and live-reload server
+Fast, minimal build system with parallel processes and live-reload server
 
 ## Setup
 
@@ -55,14 +55,15 @@ For production, build minified bundles with no sourcemap.
 mbob build
 ```
 
+There's a shortcut: `mbob b`
+
 ## Configure
 
-`.mbob` is a configuration file in [Human JSON](http://hjson.org/).
+`.mbob` is a configuration file written in [Human JSON](http://hjson.org/).
 
 Here is the starter `.mbob` with comments.
 
 ```hjson
-
 # (optional) define variables: $name, $src, $dest
 
 name: app
@@ -101,17 +102,17 @@ build: {
       watch: $src/**/*.scss
     }
 
-    # define entry as array for multiple bundles: [{ in,out }, { in,out }, ...]
+    # For multiple bundles, give entry as array: [{ in,out }, { in,out }, ...]
 
   }
 
   html: {
 
-    # if there is no dev command, build will be used
-
     build: cp $src/*.html $dest
 
-    # if there is no entry, watch can be defined at task level
+    # if there is no dev command, build will be used
+
+    # if there is no entry, define watch at task level
 
     watch: $src/*.html
   }
@@ -132,7 +133,6 @@ build: {
       # watch: $src/**/*.js
     }
   }
-
 }
 
 # static file server
