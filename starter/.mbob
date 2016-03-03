@@ -6,15 +6,6 @@ before: mkdir -p $dest
 
 build: {
 
-  js: {
-    build: browserify -p [ minifyify --compressPath . --no-map ] -t babelify $in -o $out
-    dev: watchify -v -d -t babelify $in -o $out
-    entry: {
-      in: $src/index.js
-      out: $dest/$name.js
-    }
-  }
-
   css: {
     build: node-sass --output-style compressed $in $out
     dev: node-sass --source-map-contents --source-map-embed $in $out
@@ -28,6 +19,15 @@ build: {
   html: {
     build: cp $src/*.html $dest
     watch: $src/*.html
+  }
+
+  js: {
+    build: browserify -p [ minifyify --compressPath . --no-map ] -t babelify $in -o $out
+    dev: watchify -v -d -t babelify $in -o $out
+    entry: {
+      in: $src/index.js
+      out: $dest/$name.js
+    }
   }
 }
 
