@@ -19,12 +19,7 @@ Provide npm scripts in package.json.
 }
 ```
 
-Create an `.mbob` file (see below) and use:
-
-```bash
-npm run build
-npm run dev
-```
+Create an `.mbob` file (see below).
 
 ## Global install
 
