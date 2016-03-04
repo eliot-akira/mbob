@@ -5,7 +5,7 @@ export default function getServeCommand( config ) {
 
   let { serve, vars } = config
 
-  let { reload, port } = serve
+  let { reload, reloadCSS, port } = serve
 
   let serveCommand = config.getLocalPath( 'bin/mbob' )
       + ' -s ' + (serve.from ? replaceVars( serve.from, vars ) : '.')
@@ -16,6 +16,13 @@ export default function getServeCommand( config ) {
     if (Array.isArray(reload)) reload = reload.join(',')
 
     serveCommand += ' -w "'+( replaceVars(reload, vars) )+'"'
+  }
+
+  if (reloadCSS) {
+
+    if (Array.isArray(reloadCSS)) reloadCSS = reloadCSS.join(',')
+
+    serveCommand += ' -w "'+( replaceVars(reloadCSS, vars) )+' # # reloadcss"'
   }
 
   let watches = getBuildCommands({ config, key: 'watch' })
@@ -31,6 +38,8 @@ export default function getServeCommand( config ) {
         + '"'
     }
   }
+
+
 
   return serveCommand
 }

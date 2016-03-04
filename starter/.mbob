@@ -8,11 +8,10 @@ build: {
 
   css: {
     build: node-sass --output-style compressed $in $out
-    dev: node-sass --source-map-contents --source-map-embed $in $out
+    dev: node-sass --source-map-contents --source-map-embed $in -w $out
     entry: {
       in: $src/index.scss
       out: $dest/$name.css
-      watch: $src/**/*.scss
     }
   }
 
@@ -36,5 +35,8 @@ serve: {
   port: 3000
   reload: [
     $dest/*.js
+  ]
+  reloadCSS: [
+    $dest/*.css
   ]
 }

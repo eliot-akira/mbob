@@ -134,6 +134,7 @@ class Server {
       this.log('## executing command: ' + commandToRun)
 
       let start = new Date().getTime()
+
       let p = spawn(this.shell, [this.firstParam, commandToRun], { stdio: 'inherit' })
 
       p.on('close', (code) => {

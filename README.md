@@ -80,62 +80,69 @@ There's a shortcut: `mbob b`
 
 `.mbob` is a configuration file written in [Human JSON](http://hjson.org/).
 
-Here is the starter `.mbob` with comments.
+Here is an example `.mbob` with comments.
 
 ```hjson
-# (optional) define variables: $name, $src, $dest
+# (optional) Define variables: $name, $src, $dest
 
 name: app
 src: src
 dest: build
 
-# (optional) command to run before build
+# (optional) Command to run before build
 
 before: mkdir -p $dest
 
-# build tasks to run in parallel
+# Build tasks to run in parallel
 
 build: {
 
   css: {
 
-    # build and dev commands are run from local node_modules/.bin
+    # Build and dev commands are run from local node_modules/.bin
+    # if they're defined as dependencies in package.json
 
-    # build command: minified, no sourcemap
+    # Build command: minified, no sourcemap
 
     build: node-sass --output-style compressed $in $out
 
     # (optional) dev command: compile with sourcemap
 
-    dev: node-sass --source-map-contents --source-map-embed $in $out
+    dev: node-sass --source-map-contents --source-map-embed $in -w $out
 
-    # (optional) entry for bundle(s)
+    # (optional) Entry for bundle(s)
 
     entry: {
 
-      # (optional) define variables to pass to build/dev command
+      # (optional) Define variables to pass to build/dev command
 
       in: $src/index.scss
       out: $dest/$name.css
 
-      # (optional) watch files, build and reload on change
+      # css entry doesn't need to watch files, because node-sass -w
 
-      watch: $src/**/*.scss
+      # watch: $src/**/*.scss
     }
 
     # For multiple bundles, give entry as array: [{ in,out }, { in,out }, ...]
+    # build/dev command will be run for each entry
 
   }
 
   html: {
 
-    build: cp $src/*.html $dest
+    build: html-transform $in $out
 
-    # if there is no dev command, build will be run
+    # If there is no dev command, the build command will be run on file change
 
-    # if there is no entry, optionally define watch at task level
+    entry: {
+      in: $src/index.html
+      out: $dest/index.html      
 
-    watch: $src/*.html
+      # (optional) Watch files, build and reload on change
+
+      watch: $src/*.html
+    }
   }
 
   js: {
@@ -149,29 +156,36 @@ build: {
       in: $src/index.js
       out: $dest/$name.js
 
-      # js entry doesn't need to watch files, because watchify takes care of it
+      # js entry doesn't need to watch files, because watchify
 
       # watch: $src/**/*.js
     }
   }
 }
 
-# static file server
+# Static file server
 
 serve: {
 
-  # serve from this directory
+  # Serve from this directory
 
   from: $dest
 
-  # localhost port
+  # Serve at localhost port
 
   port: 3000
 
-  # reload when watchify compiles a js bundle
+  # Reload when js bundle is compiled
 
   reload: [
     $dest/*.js
+  ]
+
+  # Reload CSS when css bundle is compiled
+  # This will apply new styles without reloading the browser
+
+  reloadCSS: [
+    $dest/*.css  
   ]
 }
 ```

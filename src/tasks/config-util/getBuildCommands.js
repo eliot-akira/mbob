@@ -27,12 +27,13 @@ export default function getBuildCommands({ key = 'build', config }) {
 
     let command
 
-    if ( watch || key === 'dev' ) {
+    if ( watch ) {
       command = task[ 'dev' ] || task[ 'build' ]
     } else {
       command = task[ key ]
     }
 
+    if ( ! command ) continue
 
     // Prepend local bin path to command, if found in package.json
 
