@@ -7,7 +7,7 @@ export default function getServeCommand( config ) {
 
   let { reload, port } = serve
 
-  let serveCommand = config.getLocalPath( 'bin/server' )
+  let serveCommand = config.getLocalPath( 'bin/mbob' )
       + ' -s ' + (serve.from ? replaceVars( serve.from, vars ) : '.')
       +' -p ' + ( port || '3000' )
 

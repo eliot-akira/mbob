@@ -24,20 +24,34 @@ export default function runParallel( commands, callback ) {
   if ( callback ) done = callback
   else done = ( code ) => process.exit(code)
 
-//console.log('runParallel', commands)
-
   for (let command of commands) {
+
+    let origCommand = command
 
     if (process.platform != 'win32') command = 'exec '+command
 
     let child = spawn(sh, [ shFlag, command ], {
       cwd: process.cwd,
       env: process.env,
-      stdio: callback ? [] : ['pipe', process.stdout, process.stderr]
+      //stdio: ['pipe', process.stdout]
+      //stdio: ['pipe', 'pipe', 'pipe']
+      stdio: 'inherit'
     })
     .on('close', childClose)
 
-    child.command = command
+    //child.stdout.on('data', (data) => process.stdout.write(data))
+/*
+    child.stderr.on('data', (data) => {
+console.log('HERE')
+      let message = data.toString()
+      try {
+        console.error( JSON.parse( message ).formatted )
+      } catch(e) {
+        console.error(message)
+      }
+    })*/
+
+    child.command = origCommand
     children.push(child)
   }
 
@@ -53,12 +67,10 @@ function childClose (code) {
 
   code = code ? (code.code || code) : code
 
-  if (verbose) {
-    if (code > 0) {
-      console.error('`' + this.cmd + '` failed with exit code ' + code)
-    } else {
-      log('`' + this.cmd + '` ended successfully')
-    }
+  if (code > 0) {
+    console.error('Fail: ' + this.command)
+  } else {
+    log('Success: ' + this.command)
   }
 
   if (code > 0 && !wait) close(code)
@@ -76,17 +88,17 @@ function status() {
   for (let child of children) {
 
     if (child.exitCode === null) {
-        log('`' + child.command + '` is still running')
+        log('Still running: ' + child.command)
     } else if (child.exitCode > 0) {
       completed++
-      log('`' + child.command + '` errored')
+      log('Errored: ' + child.command)
     } else {
       completed++
-      log('`' + child.command + '` finished')
+      log('Finished: ' + child.command)
     }
   }
 
-  verbose && console.log('\n')
+  log('\n')
 
   if ( completed === len ) done()
 }
@@ -106,7 +118,7 @@ function close (code) {
     child.removeAllListeners('close')
     child.kill("SIGINT")
 
-    log('`' + child.command + '` will now be closed')
+    log('Will close: ' + child.command)
 
     child.on('close', () => {
       closed++

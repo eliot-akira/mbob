@@ -1,15 +1,14 @@
+import Server from './index'
+import program from 'commander'
 
-var Server = require('./index')
-var program = require('commander')
-
-function main(argv) {
+function cli( argv = process.argv ) {
 
   function collect(val, memo) {
     memo.push(val)
     return memo
   }
 
-  program.version(require('../../package').version)
+  program //.version(require('../../package').version)
 //    .option('-c, --config <configfile>', 'read options from config file')
     .option('-s, --serve <directory>', 'serve the directory as static http')
     .option('-p, --port <port>', 'http server port, default 4000', parseInt)
@@ -23,13 +22,12 @@ function main(argv) {
     .on('--help', function () {
        console.log('  Examples:')
        console.log('')
-       console.log('    $ light-server -s . -p 7000')
-       console.log('    $ light-server -s . -w "*.js, src/** # npm run build && echo wow!"')
-       console.log('    $ light-server -s . -x http://localhost:8000')
-       console.log('    $ light-server -s . -b 10.0.0.1')
-       console.log('    $ light-server -x http://localhost:9999 -w "public/**"')
-       console.log('    $ light-server -s static -w "**/*.css # # reloadcss"')
-       console.log('    $ light-server -c .lightserverrc')
+       console.log('    -s . -p 7000')
+       console.log('    -s . -w "*.js, src/** # npm run build && echo wow!"')
+       console.log('    -s . -x http://localhost:8000')
+       console.log('    -s . -b 10.0.0.1')
+       console.log('    -x http://localhost:9999 -w "public/**"')
+       console.log('    -s static -w "**/*.css # # reloadcss"')
        console.log('')
        console.log('  Watch expression syntax: "files[,files] # [command to run] # [reload action]"')
        console.log('    3 parts delimited by #')
@@ -43,13 +41,13 @@ function main(argv) {
        console.log('')
      })
 
-  if (argv.length == 0) {
+  if ( ! argv.length ) {
     process.argv.push('--help')
   }
 
-  program.parse(process.argv)
+  program.parse(argv)
 
-  var options = {
+  let options = {
     port: 4000,
     interval: 500,
     delay: 0,
@@ -63,7 +61,7 @@ function main(argv) {
 */
 
   // cli can override config file
-  var cliOptions = {
+  let cliOptions = {
     port: program.port,
     interval: program.interval,
     delay: program.delay,
@@ -73,6 +71,7 @@ function main(argv) {
     proxy: program.proxy,
     verbose: program.verbose,
   }
+
   cliOptions = JSON.parse(JSON.stringify(cliOptions)) // remove undefined properties
   Object.assign(options, cliOptions)
 
@@ -81,7 +80,7 @@ function main(argv) {
     process.exit(1)
   }
 
-  Server(options).start()
+  new Server(options)
 }
 
-main(process.argv.slice(2))
+export default cli

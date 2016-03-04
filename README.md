@@ -2,9 +2,33 @@
 
 Fast, minimal build system with parallel processes and live-reload server
 
-## Setup
+## Local install
 
-**Install**
+Install `mbob` as local dev dependency.
+
+```bash
+npm install mbob --save-dev
+```
+
+Provide npm scripts in package.json.
+
+```json
+"scripts": {
+  "build": "mbob build",
+  "dev": "mbob"
+}
+```
+
+Create an `.mbob` file (see below) and use:
+
+```bash
+npm run build
+npm run dev
+```
+
+## Global install
+
+Another way is to install it as a global utility.
 
 ```bash
 npm install mbob -g
@@ -12,7 +36,7 @@ npm install mbob -g
 
 **New project**
 
-For a quick start, run `mbob init` with a new project name.
+Run `mbob init` with a new project name.
 
 ```bash
 mbob init app
@@ -24,13 +48,13 @@ Starter files include:
 - `.gitignore`
 - `.mbob`
 - `package.json`
-- `src` folder with index.js, scss, html
+- `src` folder with empty index.js, scss, html
 
 The only requirement is `.mbob` in the current working directory.
 
 **Dev dependencies**
 
-Install commands used by build tasks, such as `babel` and `node-sass`.
+Install commands to be used by build tasks, such as `babel` and `node-sass`.
 
 ```
 cd app
@@ -80,15 +104,17 @@ build: {
 
   css: {
 
+    # build and dev commands are run from local node_modules/.bin
+
     # build command: minified, no sourcemap
 
     build: node-sass --output-style compressed $in $out
 
-    # dev command: compile with sourcemap
+    # (optional) dev command: compile with sourcemap
 
     dev: node-sass --source-map-contents --source-map-embed $in $out
 
-    # entry for bundle(s)
+    # (optional) entry for bundle(s)
 
     entry: {
 
@@ -97,7 +123,7 @@ build: {
       in: $src/index.scss
       out: $dest/$name.css
 
-      # watch files, build and reload on change
+      # (optional) watch files, build and reload on change
 
       watch: $src/**/*.scss
     }
@@ -110,9 +136,9 @@ build: {
 
     build: cp $src/*.html $dest
 
-    # if there is no dev command, build will be used
+    # if there is no dev command, build will be run
 
-    # if there is no entry, define watch at task level
+    # if there is no entry, optionally define watch at task level
 
     watch: $src/*.html
   }

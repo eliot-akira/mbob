@@ -2,7 +2,8 @@ import getArgs from './util/getArgs'
 
 export default function getAction() {
 
-  let action = getArgs().argv[0] || 'dev'
+  let args = getArgs()
+  let action = args.argv[0] || 'dev'
 
   const translate = {
     'b': 'build',
@@ -11,6 +12,8 @@ export default function getAction() {
   }
 
   if (translate[action]) action = translate[action]
+
+  if (args.args.serve || args.args.s) action = 'serve'
 
   return action
 }
