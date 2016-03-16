@@ -50,7 +50,10 @@ class Server {
         return res.getHeader('content-type') && res.getHeader('content-type').indexOf('text/html') !== -1
       },
       (data, req, res, callback) => {
-        callback(null, data.toString().replace('</body>', '<script src="/__lightserver__/reload-client.js"></script></body>'))
+
+        // TODO: Get script path from config
+
+        callback(null, data.toString().replace('</body>', '<script src="/__server__/reload-client.js"></script></body>'))
       })
     )
 
@@ -152,7 +155,7 @@ class Server {
     })
 
     if (filesToWatch.length) {
-      this.log('light-server is watching these files: ' + filesToWatch.join(', '))
+      this.log('server is watching these files: ' + filesToWatch.join(', '))
       this.log('  when file changes,')
       if (commandToRun) {
         this.log('  this command will be executed:      ' + commandToRun)

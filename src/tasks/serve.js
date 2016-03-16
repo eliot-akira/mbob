@@ -1,5 +1,5 @@
 import cli from './server/cli'
 
-export default function serve() {
+export default function server( config ) {
   cli()
 }

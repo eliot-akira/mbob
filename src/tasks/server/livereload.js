@@ -5,7 +5,7 @@ import { inherits } from 'util'
 import { Server as WS  } from 'ws'
 import { EventEmitter } from 'events'
 
-const prefix = '/__lightserver__',
+const prefix = '/__server__',
       clientJsPath = prefix + '/reload-client.js',
       triggerPath = prefix + '/trigger',
       triggerCSSPath = prefix + '/triggercss',

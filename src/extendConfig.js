@@ -12,11 +12,17 @@ let pack = getJSONFile( getProjectPath('package.json') )
 
 export default function extendConfig( config ) {
 
-  let vars = {}
+  let vars = config.vars || {}
+  let reserved = ['before', 'build', 'serve', 'test']
 
-  for (let key of ['name', 'src', 'dest']) {
-    if ( config[key] ) vars[key] = config[key]
+  for (let key in config) {
+    if ( ! config.hasOwnProperty(key) || reserved.indexOf(key) >= 0 ) continue
+    vars[key] = config[key]
   }
+
+  if ( ! vars.bin ) vars.bin = getProjectBinPath()
+
+  process.env.PATH += ':'+vars.bin
 
   extend(config, {
     vars,

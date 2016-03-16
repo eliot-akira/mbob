@@ -1,12 +1,13 @@
-import { execSync } from 'child_process'
-import { getBuildCommands, replaceVars } from './config-util'
+import { getBuildCommands, localExecSync, replaceVars } from './config-util'
 import runParallel from '../util/runParallel'
 
 export default function build( config, callback ) {
 
   let commands = getBuildCommands({ config })
 
-  if ( config.before ) execSync( replaceVars(config.before, config.vars) )
+  if ( config.before ) {
+    localExecSync({ config, command: config.before })
+  }
 
   runParallel( commands, callback )
 }

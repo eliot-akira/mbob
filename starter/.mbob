@@ -13,6 +13,7 @@ build: {
       in: $src/index.scss
       out: $dest/$name.css
     }
+    require: node-sass
   }
 
   html: {
@@ -27,6 +28,13 @@ build: {
       in: $src/index.js
       out: $dest/$name.js
     }
+    require: [
+      babel-preset-es2015
+      babelify
+      browserify
+      minifyify
+      watchify
+    ]
   }
 }
 
@@ -38,5 +46,14 @@ serve: {
   ]
   reloadCSS: [
     $dest/*.css
+  ]
+}
+
+test: {
+  run: babel-tape-runner test/**/*.js | faucet
+  require: [
+    babel-tape-runner
+    faucet
+    tape
   ]
 }

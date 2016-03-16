@@ -15,7 +15,8 @@ Provide npm scripts in package.json.
 ```json
 "scripts": {
   "build": "mbob build",
-  "dev": "mbob"
+  "dev": "mbob",
+  "test": "mbob test"
 }
 ```
 
@@ -31,15 +32,14 @@ npm install mbob -g
 
 **New project**
 
-Run `mbob init` with a new project name.
+Run `mbob new` with a project name.
 
 ```bash
-mbob init app
+mbob new app
 ```
 
 Starter files include:
 
-- `.babelrc`
 - `.gitignore`
 - `.mbob`
 - `package.json`

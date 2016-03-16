@@ -9,7 +9,6 @@ function cli( argv = process.argv ) {
   }
 
   program //.version(require('../../package').version)
-//    .option('-c, --config <configfile>', 'read options from config file')
     .option('-s, --serve <directory>', 'serve the directory as static http')
     .option('-p, --port <port>', 'http server port, default 4000', parseInt)
     .option('-b, --bind <bind>', 'bind to a specific host, default 127.0.0.1')
@@ -17,7 +16,6 @@ function cli( argv = process.argv ) {
     .option('-i, --interval <watch inteval>', 'interval in ms of watching, default 500', parseInt)
     .option('-d, --delay <livereolad delay>', 'delay in ms before triggering live reload, default 0', parseInt)
     .option('-x, --proxy <upstreamurl>', 'when file not found, proxy the request to another server')
-//    .option('-q, --quiet', 'quiet mode with minimum log message')
     .option('-v, --verbose', 'verbose mode with log messages')
     .on('--help', function () {
        console.log('  Examples:')

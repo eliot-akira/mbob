@@ -39,18 +39,6 @@ export default function runParallel( commands, callback ) {
     })
     .on('close', childClose)
 
-    //child.stdout.on('data', (data) => process.stdout.write(data))
-/*
-    child.stderr.on('data', (data) => {
-console.log('HERE')
-      let message = data.toString()
-      try {
-        console.error( JSON.parse( message ).formatted )
-      } catch(e) {
-        console.error(message)
-      }
-    })*/
-
     child.command = origCommand
     children.push(child)
   }

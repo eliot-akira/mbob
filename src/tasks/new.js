@@ -4,7 +4,7 @@ import fileExists from '../util/fileExists'
 import mkdirSync from '../util/mkdirSync'
 import getArgs from '../util/getArgs'
 
-export default function init( config ) {
+export default function newProject( config ) {
 
   let { getLocalPath, getProjectPath } = config
 
@@ -18,9 +18,11 @@ export default function init( config ) {
     cwd = process.cwd()
   }
 
+  // TODO: option to specify starter folder
+
   copyFolderSoft( getLocalPath('starter'), cwd )
 
-  console.log('Init done')
+  console.log('New project created')
 
   if ( ! fileExists( path.resolve( cwd, 'node_modules' ) )) {
     console.log('Make sure to run: npm install')

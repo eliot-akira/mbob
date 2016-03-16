@@ -1,9 +1,10 @@
 import path from 'path'
 import replaceVars from './replaceVars'
+import prependLocalBinPath from './prependLocalBinPath'
 
 export default function getBuildCommands({ key = 'build', config }) {
 
-  let { build, getProjectBinPath, vars } = config
+  let { build, vars } = config
 
   let pack = config.package,
       commands = [],
@@ -28,24 +29,14 @@ export default function getBuildCommands({ key = 'build', config }) {
     let command
 
     if ( watch ) {
-      command = task[ 'dev' ] || task[ 'build' ]
+      command = task.dev || task.build
     } else {
       command = task[ key ]
     }
 
     if ( ! command ) continue
 
-    // Prepend local bin path to command, if found in package.json
-
-    let parts = command.split(' '),
-        first = parts.shift()
-
-    if ( pack.dependencies && pack.dependencies[ first ] ||
-      pack.devDependencies && pack.devDependencies[ first ] ) {
-
-      command = getProjectBinPath( first ) + ' ' + ( parts.join(' ') )
-    }
-
+    //command = prependLocalBinPath({ config, command })
 
     for (let entry of entries) {
 

@@ -8,8 +8,8 @@ let action = getAction()
 let config = getConfig('.mbob')
 
 if ( ! config ) {
-  if ( action !== 'init' ) {
-    console.error( 'No .mbob found. Run: mbob init' )
+  if ( action !== 'newProject' ) {
+    console.error( 'No .mbob found. Run: mbob new' )
     process.exit(1)
   }
   config = {}
