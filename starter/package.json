@@ -6,7 +6,7 @@
   "scripts": {
     "build": "mbob build",
     "dev": "mbob",
-    "postinstall": "mbob install",
+    "install": "mbob install",
     "test": "mbob test"
   },
   "devDependencies": {

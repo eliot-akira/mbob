@@ -1,6 +1,6 @@
 {
   "name": "mbob",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Fast, minimal build system with parallel processes and live-reload server",
   "main": "lib/index.js",
   "bin": {

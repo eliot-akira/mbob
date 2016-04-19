@@ -70,7 +70,7 @@ class Server {
 
     server.listen(this.options.port, this.options.host, () => {
 
-      console.log('Listening at http://'  + this.options.host + ':' + this.options.port)
+      this.log('Listening at http://'  + this.options.host + ':' + this.options.port)
 
       if (this.options.serveDir) {
         this.log('  serving static dir: ' + this.options.serveDir)

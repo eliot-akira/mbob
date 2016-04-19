@@ -1,6 +1,6 @@
 name: app
 src: src
-dest: build
+dest: public
 
 before: mkdir -p $dest
 
@@ -10,22 +10,22 @@ build: {
     build: node-sass --output-style compressed $in $out
     dev: node-sass --source-map-contents --source-map-embed $in -w $out
     entry: {
-      in: $src/index.scss
+      in: $src/style/index.scss
       out: $dest/$name.css
     }
     require: node-sass
   }
 
   html: {
-    build: cp $src/*.html $dest
-    watch: $src/*.html
+    build: cp $src/markup/*.html $dest
+    watch: $src/markup/*.html
   }
 
   js: {
     build: browserify -p [ minifyify --compressPath . --no-map ] -t babelify $in -o $out
     dev: watchify -v -d -t babelify $in -o $out
     entry: {
-      in: $src/index.js
+      in: $src/script/index.js
       out: $dest/$name.js
     }
     require: [

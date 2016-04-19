@@ -1,7 +1,7 @@
 import Server from './index'
 import program from 'commander'
 
-function cli( argv = process.argv ) {
+export default function cli( argv = process.argv ) {
 
   function collect(val, memo) {
     memo.push(val)
@@ -10,7 +10,7 @@ function cli( argv = process.argv ) {
 
   program //.version(require('../../package').version)
     .option('-s, --serve <directory>', 'serve the directory as static http')
-    .option('-p, --port <port>', 'http server port, default 4000', parseInt)
+    .option('-p, --port <port>', 'http server port, default 3000', parseInt)
     .option('-b, --bind <bind>', 'bind to a specific host, default 127.0.0.1')
     .option('-w, --watchexp <watch expression>', 'watch expression, repeatable', collect, [])
     .option('-i, --interval <watch inteval>', 'interval in ms of watching, default 500', parseInt)
@@ -46,7 +46,7 @@ function cli( argv = process.argv ) {
   program.parse(argv)
 
   let options = {
-    port: 4000,
+    port: 3000,
     interval: 500,
     delay: 0,
     host: 'localhost',
@@ -80,5 +80,3 @@ function cli( argv = process.argv ) {
 
   new Server(options)
 }
-
-export default cli

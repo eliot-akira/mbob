@@ -1,4 +1,4 @@
-export default function replaceVars( str, vars ) {
+function replaceVarsInString( str, vars ) {
 
   let newStr = str
 
@@ -7,4 +7,12 @@ export default function replaceVars( str, vars ) {
   }
 
   return newStr
+}
+
+export default function replaceVars( str, vars ) {
+
+  if (typeof str === 'string') return replaceVarsInString( str, vars )
+
+  // Assume array
+  return str.map((s) => replaceVarsInString( s, vars ))
 }
