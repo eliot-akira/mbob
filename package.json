@@ -1,6 +1,6 @@
 {
   "name": "mbob",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Fast, minimal build system with parallel processes and live-reload server",
   "main": "lib/index.js",
   "bin": {
@@ -11,6 +11,9 @@
     "build": "babel src --out-dir lib",
     "dev": "babel src --watch --out-dir lib",
     "prepublish": "npm run build"
+  },
+  "babel": {
+    "presets": ["es2015"]
   },
   "author": "",
   "license": "MIT",

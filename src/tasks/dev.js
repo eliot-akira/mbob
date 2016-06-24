@@ -10,7 +10,7 @@ export default function dev( config ) {
 
   let serveCommand = getServeCommand( config )
 
-  commands.push( serveCommand )
+  if (serveCommand) commands.push( serveCommand )
 
   if ( config.before ) {
     localExecSync({ config, command: config.before })

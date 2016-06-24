@@ -22,15 +22,21 @@ class Watcher extends EventEmitter {
 
     if (~file.indexOf('*')) {
 
-      glob(file, (err, files) => {
-
+      glob(file, {
+        ignore: [
+          '.git',
+          '**/node_modules',
+          '**/node_modules/**',
+          '**/_*',
+          '**/_*/**'
+        ]
+      }, (err, files) => {
         for (let file of files) {
           this.watch(file)
         }
       })
 
     } else {
-
       fs.watchFile(file, { interval: this.interval }, (curr) => {
         if (curr.isFile()) {
           this.emit('change', file)

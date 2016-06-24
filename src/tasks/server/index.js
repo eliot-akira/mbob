@@ -70,7 +70,7 @@ class Server {
 
     server.listen(this.options.port, this.options.host, () => {
 
-      this.log('Listening at http://'  + this.options.host + ':' + this.options.port)
+      console.log('Listening at http://'  + this.options.host + ':' + this.options.port)
 
       if (this.options.serveDir) {
         this.log('  serving static dir: ' + this.options.serveDir)
@@ -134,24 +134,31 @@ class Server {
         return
       }
 
-      this.log('## executing command: ' + commandToRun)
+      let commands = commandToRun.split(' && ')
 
-      let start = new Date().getTime()
+      for (let command of commands) {
 
-      let p = spawn(this.shell, [this.firstParam, commandToRun], { stdio: 'inherit' })
+        this.log('## executing command: ' + command)
 
-      p.on('close', (code) => {
-        if (code !== 0) {
-          console.log('## ERROR: command ' + commandToRun + ' exited with code ' + code)
-        } else {
-          this.log('## command succeeded in ' + (new Date().getTime() - start) + 'ms')
-          if (this.livereload) {
-            this.livereload.trigger(reloadOption, this.options.delay)
+        let start = new Date().getTime()
+
+        let p = spawn(this.shell, [this.firstParam, command], { stdio: 'inherit' })
+
+        p.on('close', (code) => {
+          if (code !== 0) {
+            console.log('## ERROR: command ' + command + ' exited with code ' + code)
+          } else {
+            this.log('## command succeeded in ' + (new Date().getTime() - start) + 'ms')
+            commands.pop()
+            if (this.livereload && ! commands.length) {
+              this.livereload.trigger(reloadOption, this.options.delay)
+            }
           }
-        }
 
-        watcher.executing = false
-      })
+          watcher.executing = false
+        })
+
+      }
     })
 
     if (filesToWatch.length) {

@@ -21,6 +21,23 @@ export default function runParallel( commands, callback ) {
 
   if ( ! Array.isArray( commands ) ) commands = [commands]
 
+  if (commands.length===0) return callback()
+
+  // If a command is array, run them all in parallel
+  // This is needed because "&&" doesn't work with spawn()
+  let combined = []
+
+  for (let command of commands) {
+    if (typeof command === 'string') combined.push(command)
+    else {
+      // Assume arrray
+      for (let c of command) {
+        combined.push(c)
+      }
+    }
+  }
+  commands = combined
+
   if ( callback ) done = callback
   else done = ( code ) => process.exit(code)
 
